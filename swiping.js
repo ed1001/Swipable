@@ -20,15 +20,6 @@ const processSwipe = (card, like) => {
   }
 }
 
-const arrows = document.querySelectorAll('.arrow');
-arrows.forEach((arrow) => {
-  console.log(arrow);
-  arrow.addEventListener('click', (event) => {
-    console.log('yesss');
-  });
-});
-
-
 const initSwipe = () => {
   const card = document.querySelector('.card-active');
   const tick = card.querySelector('#tick');
@@ -36,6 +27,7 @@ const initSwipe = () => {
   let dragging = false;
   let transX = 0;
   let transY = 0;
+
   card.requestPointerLock = card.requestPointerLock ||
                             card.mozRequestPointerLock;
 
