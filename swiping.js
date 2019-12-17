@@ -15,13 +15,22 @@ const processSwipe = (card, like) => {
   const nextCard = document.querySelector('.card-container').lastElementChild;
 
   if (nextCard) {
-    nextCard.classList.add('active');
+    nextCard.classList.add('card-active');
     initSwipe();
   }
 }
 
+const arrows = document.querySelectorAll('.arrow');
+arrows.forEach((arrow) => {
+  console.log(arrow);
+  arrow.addEventListener('click', (event) => {
+    console.log('yesss');
+  });
+});
+
+
 const initSwipe = () => {
-  const card = document.querySelector('.active');
+  const card = document.querySelector('.card-active');
   const tick = card.querySelector('#tick');
   const cross = card.querySelector('#cross');
   let dragging = false;
@@ -49,6 +58,7 @@ const initSwipe = () => {
       Object.assign(card.style, {transform: 'translateX(0px) translateY(0px)', transition: 'transform 0.25s cubic-bezier(.27,1.15,.69,1.04)'});
       tick.style.opacity = 0;
       cross.style.opacity = 0;
+      cross.style.zIndex = 0;
     }
   });
 
@@ -61,6 +71,7 @@ const initSwipe = () => {
       transY = clampNumber(transY += event.movementY, -card.offsetHeight/2, card.offsetHeight/2);
       tick.style.opacity = transX / xMax;
       cross.style.opacity = transX / xMin;
+      cross.style.zIndex = 2;
 
       Object.assign(card.style, {transform: `translateX(${transX}px) translateY(${transY}px)`, transition: 'none'});
     }
