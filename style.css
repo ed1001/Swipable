@@ -91,14 +91,22 @@ body {
   width: 100%;
 }
 
+#texture {
+  background-image: url('paper_texture.png');
+  opacity: 0.5;
+  z-index: 0;
+}
+
 #tick {
   background-image: url('tick.jpg');
   opacity: 0;
+  z-index: 2;
 }
 
 #cross {
   background-image: url('cross.jpg');
   opacity: 0;
+  z-index: 2;
 }
 
 .photo {
@@ -107,6 +115,7 @@ body {
   height: 77%;
   width: 90%;
   margin-top: 6%;
+  z-index: 1;
 }
 
 .name-container {

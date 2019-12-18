@@ -59,7 +59,6 @@ const initSwipe = () => {
       Object.assign(card.style, {transform: `translateX(0px) translateY(0px) ${rotation}`, transition: 'transform 0.25s cubic-bezier(.27,1.15,.69,1.04)'});
       tick.style.opacity = 0;
       cross.style.opacity = 0;
-      cross.style.zIndex = 0;
     }
   });
 
@@ -72,7 +71,6 @@ const initSwipe = () => {
       transY = clampNumber(transY += event.movementY, -card.offsetHeight/2, card.offsetHeight/2);
       tick.style.opacity = transX / xMax;
       cross.style.opacity = transX / xMin;
-      cross.style.zIndex = 2;
 
       Object.assign(card.style, {transform: `translateX(${transX}px) translateY(${transY}px) ${rotation}`, transition: 'none'});
     }
