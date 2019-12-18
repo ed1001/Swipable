@@ -1,4 +1,8 @@
-const returnDuration = 0.3 * 60;
+const cards = document.querySelectorAll('.card');
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 const clampNumber = (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 
@@ -20,10 +24,15 @@ const processSwipe = (card, like) => {
   }
 }
 
+cards.forEach((card) => {
+  Object.assign(card.style, {transform: `rotateZ(${getRandomInt(-7, 7)}deg)`});
+});
+
 const initSwipe = () => {
   const card = document.querySelector('.card-active');
   const tick = card.querySelector('#tick');
   const cross = card.querySelector('#cross');
+  const rotation = card.style.transform;
   let dragging = false;
   let transX = 0;
   let transY = 0;
@@ -47,7 +56,7 @@ const initSwipe = () => {
       dragging = false;
       transX = 0;
       transY = 0;
-      Object.assign(card.style, {transform: 'translateX(0px) translateY(0px)', transition: 'transform 0.25s cubic-bezier(.27,1.15,.69,1.04)'});
+      Object.assign(card.style, {transform: `translateX(0px) translateY(0px) ${rotation}`, transition: 'transform 0.25s cubic-bezier(.27,1.15,.69,1.04)'});
       tick.style.opacity = 0;
       cross.style.opacity = 0;
       cross.style.zIndex = 0;
@@ -65,7 +74,7 @@ const initSwipe = () => {
       cross.style.opacity = transX / xMin;
       cross.style.zIndex = 2;
 
-      Object.assign(card.style, {transform: `translateX(${transX}px) translateY(${transY}px)`, transition: 'none'});
+      Object.assign(card.style, {transform: `translateX(${transX}px) translateY(${transY}px) ${rotation}`, transition: 'none'});
     }
   });
 }

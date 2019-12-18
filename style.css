@@ -9,8 +9,8 @@ body {
   display: flex;
   align-items: flex-end;
   position: relative;
-  height: 600px;
-  width: 550px;
+  height: 800px;
+  width: 733px;
   background-color: rgb(240, 240, 240);
   box-shadow: inset 0 0 20px rgba(50,50,50,0.19);
   margin: auto;
@@ -24,8 +24,8 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  top: calc(50% - 250px);
-  left: calc(50% - 175px);
+  top: 8.4%;
+  left: 18.2%;
   height: 70%;
   width: 64%;
   background-color: rgb(246, 246, 246);
