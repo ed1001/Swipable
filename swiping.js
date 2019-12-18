@@ -6,15 +6,19 @@ function getRandomInt(min, max) {
 
 const clampNumber = (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 
-const checkSwipe = (card, tick, cross) => {
-  if (tick.style.opacity > 0.8) {
-    processSwipe(card, true);
-  } else if (cross.style.opacity > 0.8) {
-    processSwipe(card, false);
-  }
+const checkSwipe = (card, tick, cross, rotation) => {
+  if (tick.style.opacity < 0.8 && cross.style.opacity < 0.8) return '0px';
+
+  const discard = tick.style.opacity > 0.8 ? '200%' : '-200%';
+
+  setTimeout(() => {
+    nextCard(card);
+  }, 250);
+
+  return discard;
 }
 
-const processSwipe = (card, like) => {
+const nextCard = (card) => {
   card.parentNode.removeChild(card);
   const nextCard = document.querySelector('.card-container').lastElementChild;
 
@@ -50,16 +54,16 @@ const initSwipe = () => {
 
   window.addEventListener('mouseup', () => {
     document.exitPointerLock();
-    if (dragging) {
-      checkSwipe(card, tick, cross);
+    if (!dragging) return;
 
-      dragging = false;
-      transX = 0;
-      transY = 0;
-      Object.assign(card.style, {transform: `translateX(0px) translateY(0px) ${rotation}`, transition: 'transform 0.25s cubic-bezier(.27,1.15,.69,1.04)'});
-      tick.style.opacity = 0;
-      cross.style.opacity = 0;
-    }
+    const discard = checkSwipe(card, tick, cross, rotation);
+
+    dragging = false;
+    transX = 0;
+    transY = 0;
+    Object.assign(card.style, {transform: `translateX(${discard}) translateY(0px) ${rotation}`, transition: 'transform 0.25s cubic-bezier(.27,1.15,.69,1.04)'});
+    Object.assign(tick.style, {opacity: '0', transition: 'opacity 0.2s'});
+    Object.assign(cross.style, {opacity: '0', transition: 'opacity 0.2s'});
   });
 
   window.addEventListener('mousemove', (event) => {
