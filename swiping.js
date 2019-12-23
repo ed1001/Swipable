@@ -1,5 +1,6 @@
 const cards = document.querySelectorAll('.card');
 const arrows = document.querySelectorAll('.arrow');
+const dots = document.querySelector('.photo-dots');
 
 cards.forEach((card) => {
   Object.assign(card.style, {transform: `rotateZ(${getRandomInt(-7, 7)}deg)`});
@@ -16,10 +17,17 @@ const passClass = (elA, elB, className) => {
   elB.classList.add(className);
 }
 
+const activateDot = (id) => {
+  dots.querySelector('.active-dot').classList.remove('active-dot');
+  dots.querySelector(`[data-id='${id}']`).classList.add('active-dot');
+}
+
 const photoNav = (isNext, activeImg) => {
   if (isNext && activeImg.nextElementSibling) {
+    activateDot(activeImg.nextElementSibling.dataset['id']);
     passClass(activeImg, activeImg.nextElementSibling, 'active-img');
   } else if (!isNext && activeImg.previousElementSibling) {
+    activateDot(activeImg.previousElementSibling.dataset['id']);
     passClass(activeImg, activeImg.previousElementSibling, 'active-img');
   }
 }
@@ -69,6 +77,8 @@ const initSwipe = () => {
       photoNav(isNext, activeImg);
     });
   });
+
+  activateDot('1');
 
   card.addEventListener('mousedown', () => {
     card.requestPointerLock();
