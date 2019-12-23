@@ -1,10 +1,28 @@
 const cards = document.querySelectorAll('.card');
+const arrows = document.querySelectorAll('.arrow');
+
+cards.forEach((card) => {
+  Object.assign(card.style, {transform: `rotateZ(${getRandomInt(-7, 7)}deg)`});
+});
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const clampNumber = (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
+
+const passClass = (elA, elB, className) => {
+  elA.classList.remove(className);
+  elB.classList.add(className);
+}
+
+const photoNav = (isNext, activeImg) => {
+  if (isNext && activeImg.nextElementSibling) {
+    passClass(activeImg, activeImg.nextElementSibling, 'active-img');
+  } else if (!isNext && activeImg.previousElementSibling) {
+    passClass(activeImg, activeImg.previousElementSibling, 'active-img');
+  }
+}
 
 const checkSwipe = (card, tick, cross, rotation) => {
   if (tick.style.opacity < 0.8 && cross.style.opacity < 0.8) return '0px';
@@ -28,12 +46,9 @@ const nextCard = (card) => {
   }
 }
 
-cards.forEach((card) => {
-  Object.assign(card.style, {transform: `rotateZ(${getRandomInt(-7, 7)}deg)`});
-});
-
 const initSwipe = () => {
   const card = document.querySelector('.card-active');
+  const photos = card.querySelectorAll('.photo');
   const tick = card.querySelector('#tick');
   const cross = card.querySelector('#cross');
   const rotation = card.style.transform;
@@ -46,6 +61,14 @@ const initSwipe = () => {
 
   document.exitPointerLock = document.exitPointerLock ||
                              document.mozExitPointerLock;
+
+  arrows.forEach((arrow) => {
+    arrow.addEventListener('click', (event) => {
+      const isNext = event.target.classList.contains('next');
+      const activeImg = card.querySelector('.active-img');
+      photoNav(isNext, activeImg);
+    });
+  });
 
   card.addEventListener('mousedown', () => {
     card.requestPointerLock();
