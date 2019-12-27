@@ -6,55 +6,66 @@
   <title>Swiping</title>
 </head>
 <body>
-  <div class="card-container">
-    <div class="controls">
-      <div class="arrow back"></div>
-      <div class="photo-dots">
-        <div class="dot active-dot" data-id="1"></div>
-        <div class="dot" data-id="2"></div>
-        <div class="dot" data-id="3"></div>
-      </div>
-      <div class="arrow next"></div>
+  <div class="overlay"></div>
+  <div class="swipe-container">
+    <div class="side-container">
     </div>
-    <div class="card">
-      <div class="overlay" id="tick"></div>
-      <div class="overlay" id="cross"></div>
-      <div class="overlay" id="texture"></div>
-      <div class="photo-container">
-        <img src="meGuitar.jpg" class="photo active-img" data-id="1">
-        <img src="meShouting.jpg" class="photo" data-id="2">
-        <img src="meDrums.jpg" class="photo" data-id="3">
+    <div class="card-container">
+      <div class="controls">
+        <div class="arrow back"></div>
+        <div class="photo-dots">
+        </div>
+        <div class="arrow next"></div>
       </div>
-      <div class="name-container">
-        <p class="name-text">Tony Williams</p>
+      <div class="card" data-youtube-id="" data-soundcloud-url="https://soundcloud.com/smokemachinetaipei/smoke-machine-podcast-128-karim">
+        <div class="card-overlay" id="tick"></div>
+        <div class="card-overlay" id="cross"></div>
+        <div class="card-overlay" id="texture"></div>
+        <div class="photo-container">
+          <img src="meGuitar.jpg" class="photo img-active" data-id="1">
+          <img src="meShouting.jpg" class="photo" data-id="2">
+          <img src="meDrums.jpg" class="photo" data-id="3">
+        </div>
+        <div class="name-container">
+          <p class="name-text">Tony Williams</p>
+        </div>
+      </div>
+      <div class="card" data-youtube-id="fixMWe-O5u4" data-soundcloud-url="https://soundcloud.com/karimtikita/karim-x-malik-under-the-desert-stars">
+        <div class="card-overlay" id="tick"></div>
+        <div class="card-overlay" id="cross"></div>
+        <div class="card-overlay" id="texture"></div>
+        <div class="photo-container">
+          <img src="meGuitar.jpg" class="photo img-active" data-id="1">
+          <img src="meDrums.jpg" class="photo" data-id="2">
+        </div>
+        <div class="name-container">
+          <p class="name-text">Gerhard Berger</p>
+        </div>
+      </div>
+      <div class="card card-active" data-youtube-id="0IeU_tBrLvw" data-soundcloud-url="https://soundcloud.com/smokemachinetaipei/sets/uncover">
+        <div class="card-overlay" id="tick"></div>
+        <div class="card-overlay" id="cross"></div>
+        <div class="card-overlay" id="texture"></div>
+        <div class="photo-container">
+          <img src="meDrums.jpg" class="photo img-active" data-id="1">
+        </div>
+        <div class="name-container">
+          <p class="name-text">Ed Phillips</p>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="overlay" id="tick"></div>
-      <div class="overlay" id="cross"></div>
-      <div class="overlay" id="texture"></div>
-      <div class="photo-container">
-        <img src="meGuitar.jpg" class="photo active-img" data-id="1">
-        <img src="meShouting.jpg" class="photo" data-id="2">
-        <img src="meDrums.jpg" class="photo" data-id="3">
-      </div>
-      <div class="name-container">
-        <p class="name-text">Gerhard Berger</p>
-      </div>
+    <div class="side-container">
+      <img src="youtube.png" class="media-link media-yt">
+      <img src="soundcloud.png" class="media-link media-sc">
     </div>
-    <div class="card card-active">
-      <div class="overlay" id="tick"></div>
-      <div class="overlay" id="cross"></div>
-      <div class="overlay" id="texture"></div>
-      <div class="photo-container">
-        <img src="meGuitar.jpg" class="photo active-img" data-id="1">
-        <img src="meShouting.jpg" class="photo" data-id="2">
-        <img src="meDrums.jpg" class="photo" data-id="3">
-      </div>
-      <div class="name-container">
-        <p class="name-text">Ed Phillips</p>
-      </div>
-    </div>
+  </div>
+
+  <!-- modals -->
+  <div class="media-modal yt-modal">
+    <div id="player" class="yt-player"></div>
+  </div>
+  <div class="media-modal sc-modal">
+    <iframe width="300" height="200" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https://soundcloud.com" class="sc-player"></iframe>
   </div>
 </body>
 <script src="swiping.js"></script>

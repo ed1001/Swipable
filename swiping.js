@@ -1,6 +1,13 @@
 const cards = document.querySelectorAll('.card');
+const firstCard = document.querySelector('.card-active');
 const arrows = document.querySelectorAll('.arrow');
 const dots = document.querySelector('.photo-dots');
+const mediaYoutube = document.querySelector('.media-yt');
+const mediaSoundcloud = document.querySelector('.media-sc');
+const overlay = document.querySelector('.overlay');
+const swipeContainer = document.querySelector('.swipe-container');
+const ytModal = document.querySelector('.yt-modal');
+const scModal = document.querySelector('.sc-modal');
 
 cards.forEach((card) => {
   Object.assign(card.style, {transform: `rotateZ(${getRandomInt(-7, 7)}deg)`});
@@ -18,17 +25,17 @@ const passClass = (elA, elB, className) => {
 }
 
 const activateDot = (id) => {
-  dots.querySelector('.active-dot').classList.remove('active-dot');
-  dots.querySelector(`[data-id='${id}']`).classList.add('active-dot');
+  dots.querySelector('.dot-active').classList.remove('dot-active');
+  dots.querySelector(`[data-id='${id}']`).classList.add('dot-active');
 }
 
 const photoNav = (isNext, activeImg) => {
   if (isNext && activeImg.nextElementSibling) {
     activateDot(activeImg.nextElementSibling.dataset['id']);
-    passClass(activeImg, activeImg.nextElementSibling, 'active-img');
+    passClass(activeImg, activeImg.nextElementSibling, 'img-active');
   } else if (!isNext && activeImg.previousElementSibling) {
     activateDot(activeImg.previousElementSibling.dataset['id']);
-    passClass(activeImg, activeImg.previousElementSibling, 'active-img');
+    passClass(activeImg, activeImg.previousElementSibling, 'img-active');
   }
 }
 
@@ -50,9 +57,105 @@ const nextCard = (card) => {
 
   if (nextCard) {
     nextCard.classList.add('card-active');
+    player.loadVideoById(nextCard.dataset['youtubeId'], 0);
+    player.pauseVideo();
+    scWidget.load(nextCard.dataset['soundcloudUrl']);
     initSwipe();
+  } else {
+
   }
 }
+
+const initDots = (length) => {
+  dots.innerHTML = '<div class="dot dot-active" data-id="1"></div>'
+
+  for (let i = 2; i <= length; i++) {
+    dots.insertAdjacentHTML('beforeend', `<div class="dot" data-id="${i}"></div>`);
+  }
+  activateDot('1');
+}
+
+const activateMedia = (element, dataset) => {
+  dataset ? element.classList.add('media-active') : element.classList.remove('media-active')
+}
+
+const showModal = (element) => {
+  swipeContainer.classList.add('blur');
+  overlay.classList.add('overlay-active');
+  Object.assign(element.style, {display: 'block'});
+  setTimeout(() => { element.classList.add('modal-active'); }, 10);
+}
+
+const hideModal = (element) => {
+  swipeContainer.classList.remove('blur');
+  overlay.classList.remove('overlay-active');
+  Object.assign(element.style, {display: 'none'});
+  setTimeout(() => { element.classList.remove('modal-active'); }, 10);
+}
+
+const showYoutube = (player) => {
+  player.playVideo();
+  showModal(ytModal);
+}
+
+const hideYoutube = (player) => {
+  player.seekTo(0, true);
+  player.pauseVideo();
+  hideModal(ytModal);
+}
+
+const showSoundcloud = (player) => {
+  showModal(scModal);
+  player.play();
+}
+
+const hideSoundcloud = (player) => {
+  player.seekTo(0);
+  player.pause();
+  hideModal(scModal);
+}
+
+// load js for yt/sc APIs
+let tagYt = document.createElement('script');
+let tagSc = document.createElement('script');
+tagYt.src = "https://www.youtube.com/iframe_api";
+tagSc.src = "https://w.soundcloud.com/player/api.js";
+let firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tagYt, firstScriptTag);
+firstScriptTag.parentNode.insertBefore(tagSc, firstScriptTag);
+
+//init yt player
+let player;
+const firstVid = firstCard.dataset['youtubeId'];
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    videoId: `${firstVid}`,
+  });
+}
+
+//init sc player
+const scPlayer = document.querySelector('.sc-player');
+const firstSound = firstCard.dataset['soundcloudUrl'];
+let scWidget;
+
+window.addEventListener('load', () => {
+  scWidget = SC.Widget(scPlayer);
+  scWidget.load(firstSound)
+});
+
+mediaYoutube.addEventListener('click', () => {
+  showYoutube(player);
+});
+
+mediaSoundcloud.addEventListener('click', () => {
+  showSoundcloud(scWidget);
+});
+
+overlay.addEventListener('click', () => {
+  hideYoutube(player);
+  hideSoundcloud(scWidget);
+});
 
 const initSwipe = () => {
   const card = document.querySelector('.card-active');
@@ -73,12 +176,15 @@ const initSwipe = () => {
   arrows.forEach((arrow) => {
     arrow.addEventListener('click', (event) => {
       const isNext = event.target.classList.contains('next');
-      const activeImg = card.querySelector('.active-img');
+      const activeImg = card.querySelector('.img-active');
       photoNav(isNext, activeImg);
     });
   });
 
-  activateDot('1');
+  initDots(photos.length);
+
+  activateMedia(mediaYoutube, card.dataset['youtubeId']);
+  activateMedia(mediaSoundcloud, card.dataset['soundcloudUrl']);
 
   card.addEventListener('mousedown', () => {
     card.requestPointerLock();
